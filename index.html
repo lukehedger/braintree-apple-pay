@@ -69,6 +69,8 @@
         },
         function (err, instance) {
           button.addEventListener("click", function () {
+            console.log("Clicked Purchase");
+
             instance.requestPaymentMethod(async function (err, payload) {
               console.log(payload);
 
