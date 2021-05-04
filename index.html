@@ -58,11 +58,11 @@
           authorization: "sandbox_fwwhkscr_gqgpfqjyy257b7zv",
           selector: "#dropin-container",
           applePay: {
-            displayName: "MyStore",
+            displayName: "Cancer Research UK",
             paymentRequest: {
               total: {
-                label: "My Store",
-                amount: "19.99",
+                label: "Cancer Research UK",
+                amount: "4.99",
               },
             },
           },
@@ -70,7 +70,49 @@
         function (err, instance) {
           button.addEventListener("click", function () {
             instance.requestPaymentMethod(function (err, payload) {
-              console.log(payload);
+              fetch("https://api.pws.int.cruk.org/transaction", {
+                body: JSON.stringify({
+                  amount: "4.99",
+                  correlationId: "9UtQ_X_6Vn",
+                  merchantAccountId: "CRUKSingleDonation",
+                  metadata: {
+                    typeRadioGroup: "yes",
+                    motivation: "Different reason",
+                    inMemoryName: "AB",
+                    restriction: "RES828",
+                    emailOptIn: "yes",
+                    postOptIn: "no",
+                    textOptIn: "yes",
+                    phoneOptIn: "yes",
+                    title: "Mr",
+                    forename: "Prince",
+                    surname: "Goyette",
+                    emailAddress: "Orion_Ryan57@gmail.com",
+                    phoneNumber: "02066593269",
+                    addressLine1: "199 Larkin Lodge",
+                    addressLine2: "Dooley Knoll",
+                    addressLine3: "OKon Cliffs",
+                    city: "South Kurtiston",
+                    postalCode: "GU22 1SS",
+                    country: "United Kingdom",
+                    validationStatus: "NV",
+                    giftAid: ["yes"],
+                    restrictionDescription: "developing better treatments",
+                    admin: {
+                      formID: "ONDON000001",
+                      product: "ONLDON",
+                      source: "20MNT1004",
+                    },
+                  },
+                  recaptcha: { action: "test-transaction", token: "" },
+                  transaction: payload.nonce,
+                }),
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                method: "POST",
+              });
             });
           });
         }
